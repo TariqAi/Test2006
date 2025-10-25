@@ -1,0 +1,814 @@
+{
+  "knowledge_base": {
+    "title": "Space Science AI Assistant Knowledge Base",
+    "description": "Comprehensive knowledge base for space science topics including planets, missions, stars, phenomena, and latest discoveries",
+    "version": "1.0",
+    "last_updated": "2024",
+    "chunks": [
+      {
+        "id": "perseverance_001",
+        "text": "NASA's Perseverance rover landed on Mars on February 18, 2021, in Jezero Crater to search for signs of ancient microbial life and collect samples for future return to Earth.",
+        "metadata": {
+          "topic": "Mars Exploration",
+          "subtopic": "Perseverance Rover",
+          "type": "Mission",
+          "source": "https://mars.nasa.gov/mars2020/",
+          "year": "2021",
+          "keywords": ["Mars", "rover", "astrobiology", "sample collection", "Jezero Crater"]
+        }
+      },
+      {
+        "id": "perseverance_002",
+        "text": "Jezero Crater was selected as Perseverance's landing site because it contains an ancient river delta and lake bed, providing ideal conditions for preserving signs of past microbial life.",
+        "metadata": {
+          "topic": "Mars Exploration",
+          "subtopic": "Landing Site Selection",
+          "type": "Planet",
+          "source": "https://mars.nasa.gov/mars2020/mission/science/",
+          "year": "2021",
+          "keywords": ["Jezero Crater", "ancient lake", "river delta", "astrobiology"]
+        }
+      },
+      {
+        "id": "perseverance_003",
+        "text": "The Perseverance rover weighs 1,025 kilograms and is powered by a Multi-Mission Radioisotope Thermoelectric Generator (MMRTG) that provides consistent power for at least 14 years.",
+        "metadata": {
+          "topic": "Mars Exploration",
+          "subtopic": "Rover Specifications",
+          "type": "Mission",
+          "source": "https://mars.nasa.gov/mars2020/spacecraft/rover/",
+          "year": "2021",
+          "keywords": ["specifications", "power system", "MMRTG", "nuclear power"]
+        }
+      },
+      {
+        "id": "ingenuity_001",
+        "text": "The Ingenuity Mars Helicopter, attached to Perseverance, became the first powered aircraft to achieve controlled flight on another planet on April 19, 2021.",
+        "metadata": {
+          "topic": "Mars Exploration",
+          "subtopic": "Ingenuity Helicopter",
+          "type": "Mission",
+          "source": "https://mars.nasa.gov/technology/helicopter/",
+          "year": "2021",
+          "keywords": ["helicopter", "first flight", "Mars atmosphere", "technology demonstration"]
+        }
+      },
+      {
+        "id": "planetary_formation_001",
+        "text": "Planetary formation begins in protoplanetary disks around young stars, where dust grains collide and stick together through electrostatic forces to form larger aggregates called planetesimals.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Planetary Formation",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/solar-system/how-do-planets-form/",
+          "year": "2024",
+          "keywords": ["protoplanetary disk", "planetesimals", "accretion", "solar system formation"]
+        }
+      },
+      {
+        "id": "atmospheric_composition_001",
+        "text": "Mars has a thin atmosphere composed of 95.3% carbon dioxide, 2.7% nitrogen, and 1.6% argon, with trace amounts of oxygen and water vapor.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Atmospheric Composition",
+          "type": "Planet",
+          "source": "https://mars.nasa.gov/all-about-mars/facts/",
+          "year": "2024",
+          "keywords": ["Mars atmosphere", "carbon dioxide", "atmospheric pressure", "climate"]
+        }
+      },
+      {
+        "id": "gas_giants_001",
+        "text": "Jupiter's Great Red Spot is a massive anticyclonic storm that has been raging for at least 350 years, with winds reaching speeds of up to 432 km/h.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Gas Giant Systems",
+          "type": "Planet",
+          "source": "https://www.nasa.gov/jupiter/",
+          "year": "2024",
+          "keywords": ["Jupiter", "Great Red Spot", "storm systems", "atmospheric dynamics"]
+        }
+      },
+      {
+        "id": "exoplanet_detection_001",
+        "text": "The transit method detects exoplanets by measuring the slight dimming of a star's light when a planet passes in front of it, as observed by space telescopes like Kepler and TESS.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Exoplanet Detection",
+          "type": "Concept",
+          "source": "https://exoplanets.nasa.gov/alien-worlds/ways-to-find-a-planet/",
+          "year": "2024",
+          "keywords": ["exoplanets", "transit method", "Kepler", "TESS", "planet hunting"]
+        }
+      },
+      {
+        "id": "curiosity_001",
+        "text": "NASA's Curiosity rover has been exploring Mars since August 2012, discovering evidence of ancient habitable environments and seasonal methane variations in the Martian atmosphere.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "Curiosity Rover",
+          "type": "Mission",
+          "source": "https://mars.nasa.gov/msl/",
+          "year": "2012",
+          "keywords": ["Curiosity", "Mars exploration", "habitability", "methane detection"]
+        }
+      },
+      {
+        "id": "voyager_001",
+        "text": "The Voyager 1 and 2 spacecraft, launched in 1977, have provided unprecedented data about the outer planets and are now exploring interstellar space beyond the heliosphere.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "Voyager Program",
+          "type": "Mission",
+          "source": "https://voyager.jpl.nasa.gov/",
+          "year": "1977",
+          "keywords": ["Voyager", "interstellar space", "outer planets", "heliosphere"]
+        }
+      },
+      {
+        "id": "jwst_001",
+        "text": "The James Webb Space Telescope, launched in December 2021, uses infrared observations to study the formation of the first galaxies and stars in the early universe.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "James Webb Space Telescope",
+          "type": "Mission",
+          "source": "https://www.jwst.nasa.gov/",
+          "year": "2021",
+          "keywords": ["James Webb", "infrared astronomy", "early universe", "galaxy formation"]
+        }
+      },
+      {
+        "id": "iss_001",
+        "text": "The International Space Station orbits Earth at an altitude of approximately 408 kilometers, serving as a microgravity laboratory for scientific research and international cooperation.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "International Space Station",
+          "type": "Mission",
+          "source": "https://www.nasa.gov/international-space-station/",
+          "year": "1998",
+          "keywords": ["ISS", "microgravity", "space laboratory", "international cooperation"]
+        }
+      },
+      {
+        "id": "stellar_formation_001",
+        "text": "Stars form in molecular clouds when gravitational collapse overcomes gas pressure, leading to nuclear fusion ignition when core temperatures reach approximately 10 million Kelvin.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Stellar Formation",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/focus-areas/how-do-stars-form-and-evolve/",
+          "year": "2024",
+          "keywords": ["star formation", "molecular clouds", "nuclear fusion", "gravitational collapse"]
+        }
+      },
+      {
+        "id": "binary_systems_001",
+        "text": "Binary star systems consist of two stars orbiting their common center of mass, with mass transfer between components potentially leading to dramatic events like novae and Type Ia supernovae.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Binary Star Systems",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["binary stars", "mass transfer", "novae", "supernovae"]
+        }
+      },
+      {
+        "id": "stellar_death_001",
+        "text": "Massive stars with initial masses greater than 8 solar masses end their lives in supernova explosions, potentially leaving behind neutron stars or black holes.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Stellar Death and Supernovae",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["supernovae", "neutron stars", "black holes", "stellar evolution"]
+        }
+      },
+      {
+        "id": "black_holes_001",
+        "text": "Black holes are regions of spacetime where gravitational effects become so strong that nothing, not even light, can escape from inside the event horizon.",
+        "metadata": {
+          "topic": "Space Phenomena",
+          "subtopic": "Black Holes",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/focus-areas/black-holes/",
+          "year": "2024",
+          "keywords": ["black holes", "event horizon", "spacetime", "general relativity"]
+        }
+      },
+      {
+        "id": "gravitational_waves_001",
+        "text": "Gravitational waves are ripples in spacetime caused by accelerating masses, first directly detected by LIGO in 2015 from the merger of two black holes.",
+        "metadata": {
+          "topic": "Space Phenomena",
+          "subtopic": "Gravitational Waves",
+          "type": "Concept",
+          "source": "https://www.ligo.caltech.edu/",
+          "year": "2015",
+          "keywords": ["gravitational waves", "LIGO", "black hole merger", "Einstein"]
+        }
+      },
+      {
+        "id": "solar_wind_001",
+        "text": "Solar wind is a stream of charged particles released from the Sun's corona, traveling at speeds of 300-800 km/s and shaping planetary magnetospheres throughout the solar system.",
+        "metadata": {
+          "topic": "Space Phenomena",
+          "subtopic": "Solar Wind and Space Weather",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/heliophysics/",
+          "year": "2024",
+          "keywords": ["solar wind", "space weather", "magnetosphere", "charged particles"]
+        }
+      },
+      {
+        "id": "early_universe_001",
+        "text": "Recent observations by the James Webb Space Telescope have revealed unexpectedly massive and mature galaxies existing just 400-600 million years after the Big Bang.",
+        "metadata": {
+          "topic": "Latest Discoveries",
+          "subtopic": "Early Universe Observations",
+          "type": "Concept",
+          "source": "https://www.jwst.nasa.gov/content/science/firstImages.html",
+          "year": "2022",
+          "keywords": ["early universe", "James Webb", "galaxy formation", "Big Bang"]
+        }
+      },
+      {
+        "id": "gw_astronomy_001",
+        "text": "Gravitational wave astronomy has opened a new window to the universe, with over 90 confirmed detections of black hole and neutron star mergers since 2015.",
+        "metadata": {
+          "topic": "Latest Discoveries",
+          "subtopic": "Gravitational Wave Astronomy",
+          "type": "Concept",
+          "source": "https://www.ligo.org/detections.php",
+          "year": "2023",
+          "keywords": ["gravitational waves", "multi-messenger astronomy", "compact objects", "LIGO-Virgo"]
+        }
+      },
+      {
+        "id": "exoplanet_atmospheres_001",
+        "text": "The James Webb Space Telescope has successfully detected water vapor, clouds, and atmospheric composition in the atmospheres of several exoplanets, including WASP-96b and K2-18b.",
+        "metadata": {
+          "topic": "Latest Discoveries",
+          "subtopic": "Exoplanet Atmospheric Studies",
+          "type": "Concept",
+          "source": "https://exoplanets.nasa.gov/news/",
+          "year": "2022",
+          "keywords": ["exoplanet atmospheres", "James Webb", "water vapor", "atmospheric composition"]
+        }
+      },
+      {
+        "id": "exomars_tgo_001",
+        "text": "ESA's ExoMars Trace Gas Orbiter has been studying Mars' atmosphere since 2016, searching for methane and other trace gases that could indicate biological or geological activity.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "ExoMars Program",
+          "type": "Mission",
+          "source": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Exploration/ExoMars",
+          "year": "2016",
+          "keywords": ["ExoMars", "ESA", "trace gases", "methane detection", "Mars atmosphere"]
+        }
+      },
+      {
+        "id": "largest_stars_001",
+        "text": "UY Scuti is currently considered the largest known star by radius, located in the constellation Scutum approximately 9,500 light-years from Earth. This red supergiant has a radius estimated to be around 1,700 times larger than our Sun, making it one of the most voluminous stars known.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Largest Stars",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["UY Scuti", "largest star", "red supergiant", "stellar radius", "Scutum constellation"]
+        }
+      },
+      {
+        "id": "most_massive_stars_001",
+        "text": "R136a1, located in the Large Magellanic Cloud's Tarantula Nebula, is the most massive known star with an estimated mass of over 300 times that of our Sun. This Wolf-Rayet star is extremely hot and luminous, with surface temperatures exceeding 50,000 Kelvin.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Most Massive Stars",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["R136a1", "most massive star", "Wolf-Rayet star", "Large Magellanic Cloud", "Tarantula Nebula"]
+        }
+      },
+      {
+        "id": "stellar_size_comparison_001",
+        "text": "Stellar size varies dramatically across different types of stars. While red supergiants like UY Scuti and VY Canis Majoris can have radii over 1,000 times larger than the Sun, the most massive stars like R136a1 are typically much smaller in radius but incredibly dense and hot.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Stellar Size Comparison",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["stellar size", "red supergiants", "VY Canis Majoris", "stellar comparison", "stellar density"]
+        }
+      },
+      {
+        "id": "hypergiant_stars_001",
+        "text": "Hypergiant stars represent the most extreme stellar objects, including luminous blue variables like Eta Carinae and red hypergiants like VV Cephei. These stars are so massive and unstable that they can experience dramatic outbursts and may explode as hypernovae.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Hypergiant Stars",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["hypergiant stars", "Eta Carinae", "VV Cephei", "luminous blue variables", "hypernovae"]
+        }
+      },
+      {
+        "id": "stellar_evolution_massive_001",
+        "text": "The most massive stars evolve rapidly, burning through their nuclear fuel in just a few million years compared to billions of years for Sun-like stars. They progress through multiple fusion stages, creating heavier elements up to iron before ending in catastrophic supernova explosions.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Massive Star Evolution",
+          "type": "Concept",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["massive star evolution", "nuclear fusion", "stellar lifetime", "heavy elements", "supernova"]
+        }
+      },
+      {
+        "id": "jupiter_001",
+        "text": "Jupiter is the largest planet in our solar system, with a mass greater than all other planets combined. This gas giant has a Great Red Spot, a massive storm larger than Earth that has been raging for centuries. Jupiter has 95 known moons, including the four Galilean moons: Io, Europa, Ganymede, and Callisto.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Gas Giants",
+          "type": "Planet",
+          "source": "https://science.nasa.gov/jupiter/",
+          "year": "2024",
+          "keywords": ["Jupiter", "gas giant", "Great Red Spot", "Galilean moons", "largest planet"]
+        }
+      },
+      {
+        "id": "europa_001",
+        "text": "Europa, one of Jupiter's moons, is considered one of the most promising places to search for extraterrestrial life. Beneath its icy surface lies a subsurface ocean that may contain twice as much water as all Earth's oceans combined. The Europa Clipper mission, launched in 2024, will study this moon in detail.",
+        "metadata": {
+          "topic": "Astrobiology",
+          "subtopic": "Ocean Worlds",
+          "type": "Moon",
+          "source": "https://europa.nasa.gov/",
+          "year": "2024",
+          "keywords": ["Europa", "subsurface ocean", "astrobiology", "Europa Clipper", "extraterrestrial life"]
+        }
+      },
+      {
+        "id": "milky_way_001",
+        "text": "The Milky Way is a barred spiral galaxy containing over 100 billion stars. Our solar system is located in the Orion Arm, about 26,000 light-years from the galactic center. At the center lies Sagittarius A*, a supermassive black hole with a mass of about 4 million suns.",
+        "metadata": {
+          "topic": "Galactic Astronomy",
+          "subtopic": "Milky Way Galaxy",
+          "type": "Galaxy",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["Milky Way", "spiral galaxy", "Sagittarius A*", "galactic center", "Orion Arm"]
+        }
+      },
+      {
+        "id": "jwst_002",
+        "text": "The James Webb Space Telescope (JWST) has revolutionized our understanding of the early universe, detecting galaxies that formed just 400 million years after the Big Bang. Its infrared capabilities allow it to peer through cosmic dust and observe star formation in unprecedented detail.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "Space Telescopes",
+          "type": "Mission",
+          "source": "https://webb.nasa.gov/",
+          "year": "2024",
+          "keywords": ["James Webb", "JWST", "infrared telescope", "early universe", "galaxy formation"]
+        }
+      },
+      {
+        "id": "artemis_001",
+        "text": "NASA's Artemis program aims to return humans to the Moon and establish a sustainable lunar presence. Artemis I successfully completed an uncrewed test flight in 2022, and Artemis II will carry astronauts around the Moon. The program plans to land the first woman and next man on the lunar surface.",
+        "metadata": {
+          "topic": "Space Missions",
+          "subtopic": "Lunar Exploration",
+          "type": "Mission",
+          "source": "https://www.nasa.gov/artemis/",
+          "year": "2024",
+          "keywords": ["Artemis", "Moon landing", "lunar exploration", "sustainable presence", "human spaceflight"]
+        }
+      },
+      {
+        "id": "exoplanets_001",
+        "text": "Over 5,000 exoplanets have been confirmed, with many located in the habitable zone where liquid water could exist. The TRAPPIST-1 system contains seven Earth-sized planets, three of which are in the habitable zone. The search for potentially habitable worlds continues with missions like TESS and upcoming telescopes.",
+        "metadata": {
+          "topic": "Exoplanets",
+          "subtopic": "Habitable Worlds",
+          "type": "Discovery",
+          "source": "https://exoplanets.nasa.gov/",
+          "year": "2024",
+          "keywords": ["exoplanets", "habitable zone", "TRAPPIST-1", "TESS", "potentially habitable"]
+        }
+      },
+      {
+        "id": "black_holes_002",
+        "text": "Black holes are regions of spacetime where gravity is so strong that nothing, not even light, can escape. The Event Horizon Telescope captured the first image of a black hole in M87 galaxy in 2019, and later imaged Sagittarius A* in our own galaxy. These observations confirmed Einstein's predictions about extreme gravity.",
+        "metadata": {
+          "topic": "Astrophysics",
+          "subtopic": "Black Holes",
+          "type": "Phenomenon",
+          "source": "https://eventhorizontelescope.org/",
+          "year": "2024",
+          "keywords": ["black holes", "Event Horizon Telescope", "M87", "Sagittarius A*", "Einstein"]
+        }
+      },
+      {
+        "id": "saturn_rings_001",
+        "text": "Saturn's ring system is the most extensive and complex in the solar system, composed primarily of water ice particles ranging from tiny grains to house-sized chunks. The Cassini mission revealed that the rings are relatively young, possibly only 100-400 million years old, and are constantly changing due to gravitational interactions with Saturn's moons.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Planetary Rings",
+          "type": "Planet",
+          "source": "https://solarsystem.nasa.gov/planets/saturn/",
+          "year": "2024",
+          "keywords": ["Saturn", "planetary rings", "Cassini", "water ice", "ring dynamics"]
+        }
+      },
+      {
+        "id": "mars_atmosphere_001",
+        "text": "Mars has a thin atmosphere composed of 95% carbon dioxide, with traces of nitrogen and argon. The atmospheric pressure is less than 1% of Earth's, making liquid water unstable on the surface. However, evidence suggests Mars once had a thicker atmosphere and flowing water billions of years ago.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Planetary Atmospheres",
+          "type": "Planet",
+          "source": "https://mars.nasa.gov/",
+          "year": "2024",
+          "keywords": ["Mars atmosphere", "carbon dioxide", "atmospheric pressure", "ancient Mars", "water history"]
+        }
+      },
+      {
+        "id": "neutron_stars_001",
+        "text": "Neutron stars are the collapsed cores of massive stars, containing more mass than the Sun compressed into a sphere only 20 kilometers across. They have the strongest magnetic fields in the universe and can spin hundreds of times per second. Pulsars are rapidly rotating neutron stars that emit beams of radiation.",
+        "metadata": {
+          "topic": "Stellar Astronomy",
+          "subtopic": "Compact Objects",
+          "type": "Stellar Remnant",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["neutron stars", "pulsars", "magnetic fields", "stellar collapse", "compact objects"]
+        }
+      },
+      {
+        "id": "dark_matter_001",
+        "text": "Dark matter makes up approximately 27% of the universe but doesn't interact with electromagnetic radiation, making it invisible to telescopes. Its presence is inferred from gravitational effects on visible matter and the cosmic microwave background. Scientists are actively searching for dark matter particles using underground detectors and particle accelerators.",
+        "metadata": {
+          "topic": "Cosmology",
+          "subtopic": "Dark Matter",
+          "type": "Phenomenon",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["dark matter", "invisible matter", "gravitational effects", "particle physics", "cosmology"]
+        }
+      },
+      {
+        "id": "venus_001",
+        "text": "Venus is the hottest planet in the solar system with surface temperatures reaching 462°C (864°F), hot enough to melt lead. Its thick atmosphere of carbon dioxide creates a runaway greenhouse effect. Venus rotates backwards compared to most planets and has the longest day of any planet - 243 Earth days.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Terrestrial Planets",
+          "type": "Planet",
+          "source": "https://solarsystem.nasa.gov/planets/venus/",
+          "year": "2024",
+          "keywords": ["Venus", "greenhouse effect", "retrograde rotation", "hottest planet", "thick atmosphere"]
+        }
+      },
+      {
+        "id": "cosmic_microwave_background_001",
+        "text": "The Cosmic Microwave Background (CMB) is the afterglow of the Big Bang, discovered in 1965. This radiation fills the entire universe and provides a snapshot of the cosmos when it was only 380,000 years old. Tiny fluctuations in the CMB reveal the seeds that grew into galaxies and large-scale structures we see today.",
+        "metadata": {
+          "topic": "Cosmology",
+          "subtopic": "Big Bang Theory",
+          "type": "Phenomenon",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["cosmic microwave background", "CMB", "Big Bang", "early universe", "galaxy formation"]
+        }
+      },
+      {
+        "id": "titan_001",
+        "text": "Titan, Saturn's largest moon, is the only moon in the solar system with a substantial atmosphere and liquid lakes on its surface. However, these lakes contain liquid methane and ethane instead of water. The Cassini-Huygens mission revealed a complex world with weather patterns, seasons, and a possible subsurface ocean of water.",
+        "metadata": {
+          "topic": "Planetary Science",
+          "subtopic": "Moons",
+          "type": "Moon",
+          "source": "https://solarsystem.nasa.gov/moons/saturn-moons/titan/",
+          "year": "2024",
+          "keywords": ["Titan", "methane lakes", "thick atmosphere", "Cassini-Huygens", "subsurface ocean"]
+        }
+      },
+      {
+        "id": "dragonfly_001",
+        "text": "NASA's Dragonfly mission is a rotorcraft lander scheduled to launch in 2028 and arrive at Titan in 2034. This revolutionary mission will fly to multiple locations on Titan's surface to study its prebiotic chemistry and search for signs of life. Dragonfly will be the first mission to use powered flight on another world since the Mars helicopters.",
+        "metadata": {
+          "topic": "Future Missions",
+          "subtopic": "Dragonfly",
+          "type": "Mission",
+          "source": "https://www.nasa.gov/dragonfly/",
+          "year": "2028",
+          "keywords": ["Dragonfly", "Titan", "rotorcraft", "prebiotic chemistry", "astrobiology", "powered flight"]
+        }
+      },
+      {
+        "id": "veritas_001",
+        "text": "VERITAS (Venus Emissivity, Radio Science, InSAR, Topography, and Spectroscopy) is a planned NASA mission to Venus scheduled for the 2030s. It will use synthetic aperture radar to create high-resolution topographic maps of Venus and study its geological history, including evidence of past or present volcanic activity.",
+        "metadata": {
+          "topic": "Future Missions",
+          "subtopic": "VERITAS",
+          "type": "Mission",
+          "source": "https://www.jpl.nasa.gov/missions/veritas",
+          "year": "2030",
+          "keywords": ["VERITAS", "Venus", "synthetic aperture radar", "topography", "volcanic activity", "geology"]
+        }
+      },
+      {
+        "id": "roman_001",
+        "text": "The Nancy Grace Roman Space Telescope, formerly known as WFIRST, is scheduled to launch in the mid-2020s. It will have a field of view 100 times larger than Hubble and will conduct surveys to study dark energy, exoplanets, and infrared astrophysics. The telescope will use gravitational microlensing to discover thousands of new exoplanets.",
+        "metadata": {
+          "topic": "Future Missions",
+          "subtopic": "Roman Space Telescope",
+          "type": "Mission",
+          "source": "https://roman.gsfc.nasa.gov/",
+          "year": "2025",
+          "keywords": ["Roman Space Telescope", "WFIRST", "dark energy", "exoplanets", "gravitational microlensing", "infrared"]
+        }
+      },
+      {
+        "id": "white_dwarf_001",
+        "text": "A white dwarf is the final evolutionary stage of stars with masses up to 8 times that of the Sun. These extremely dense objects are about the size of Earth but contain the mass of the Sun. White dwarfs are composed of electron-degenerate matter and slowly cool over billions of years, eventually becoming cold black dwarfs.",
+        "metadata": {
+          "topic": "Stellar Evolution",
+          "subtopic": "White Dwarfs",
+          "type": "Stellar Object",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["white dwarf", "stellar evolution", "electron degenerate matter", "stellar remnant", "cooling"]
+        }
+      },
+      {
+        "id": "quasar_001",
+        "text": "Quasars are extremely luminous active galactic nuclei powered by supermassive black holes. They can outshine entire galaxies and are among the most distant and energetic objects in the universe. The light from quasars can travel billions of years to reach Earth, providing insights into the early universe.",
+        "metadata": {
+          "topic": "Active Galactic Nuclei",
+          "subtopic": "Quasars",
+          "type": "Galactic Object",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["quasar", "active galactic nuclei", "supermassive black hole", "luminous", "early universe"]
+        }
+      },
+      {
+        "id": "grb_001",
+        "text": "Gamma-ray bursts (GRBs) are the most energetic explosions in the universe, releasing more energy in seconds than the Sun will produce in its entire lifetime. They occur when massive stars collapse into black holes or when neutron stars merge, creating intense beams of gamma radiation.",
+        "metadata": {
+          "topic": "High-Energy Astrophysics",
+          "subtopic": "Gamma-Ray Bursts",
+          "type": "Phenomenon",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["gamma-ray burst", "GRB", "stellar collapse", "neutron star merger", "high energy"]
+        }
+      },
+      {
+        "id": "magnetar_001",
+        "text": "Magnetars are neutron stars with extremely powerful magnetic fields, up to 1000 times stronger than typical neutron stars. These magnetic fields can cause starquakes that release enormous amounts of energy as X-rays and gamma rays. Only about 30 magnetars are known in our galaxy.",
+        "metadata": {
+          "topic": "Neutron Stars",
+          "subtopic": "Magnetars",
+          "type": "Stellar Object",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["magnetar", "neutron star", "magnetic field", "starquake", "X-rays"]
+        }
+      },
+      {
+        "id": "cosmic_inflation_001",
+        "text": "Cosmic inflation is a theory proposing that the universe underwent rapid exponential expansion in the first fraction of a second after the Big Bang. This inflation explains the uniformity of the cosmic microwave background and the large-scale structure of the universe we observe today.",
+        "metadata": {
+          "topic": "Cosmology",
+          "subtopic": "Cosmic Inflation",
+          "type": "Theory",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["cosmic inflation", "Big Bang", "exponential expansion", "cosmic microwave background", "early universe"]
+        }
+      },
+      {
+        "id": "wormhole_001",
+        "text": "Wormholes are theoretical passages through spacetime that could create shortcuts between distant regions of the universe. While mathematically possible in Einstein's general relativity, no wormholes have been observed, and they would likely require exotic matter with negative energy density to remain stable.",
+        "metadata": {
+          "topic": "Theoretical Physics",
+          "subtopic": "Wormholes",
+          "type": "Theory",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["wormhole", "spacetime", "general relativity", "exotic matter", "theoretical"]
+        }
+      },
+      {
+        "id": "kuiper_belt_001",
+        "text": "The Kuiper Belt is a region of the solar system beyond Neptune, extending from about 30 to 50 AU from the Sun. It contains thousands of icy bodies, including dwarf planets like Pluto and Eris. These objects are remnants from the solar system's formation and provide insights into its early history.",
+        "metadata": {
+          "topic": "Solar System",
+          "subtopic": "Kuiper Belt",
+          "type": "Region",
+          "source": "https://solarsystem.nasa.gov/solar-system/kuiper-belt/",
+          "year": "2024",
+          "keywords": ["Kuiper Belt", "icy bodies", "dwarf planets", "Neptune", "solar system formation"]
+        }
+      },
+      {
+        "id": "pluto_001",
+        "text": "Pluto is a dwarf planet in the Kuiper Belt, formerly classified as the ninth planet until 2006. It has five known moons, with Charon being the largest. The New Horizons mission revealed Pluto to be a geologically active world with nitrogen plains, methane dunes, and possible subsurface ocean.",
+        "metadata": {
+          "topic": "Solar System",
+          "subtopic": "Dwarf Planets",
+          "type": "Dwarf Planet",
+          "source": "https://solarsystem.nasa.gov/planets/dwarf-planets/pluto/",
+          "year": "2024",
+          "keywords": ["Pluto", "dwarf planet", "Charon", "New Horizons", "nitrogen plains", "methane dunes"]
+        }
+      },
+      {
+        "id": "eris_001",
+        "text": "Eris is the most massive known dwarf planet in the solar system, located in the scattered disk beyond the Kuiper Belt. Its discovery in 2005 led to the reclassification of Pluto as a dwarf planet. Eris has one known moon, Dysnomia, and takes about 557 Earth years to orbit the Sun.",
+        "metadata": {
+          "topic": "Solar System",
+          "subtopic": "Dwarf Planets",
+          "type": "Dwarf Planet",
+          "source": "https://solarsystem.nasa.gov/planets/dwarf-planets/eris/",
+          "year": "2024",
+          "keywords": ["Eris", "dwarf planet", "scattered disk", "Dysnomia", "most massive"]
+        }
+      },
+      {
+        "id": "haumea_001",
+        "text": "Haumea is an elongated dwarf planet in the Kuiper Belt, notable for its rapid rotation that completes one day in just 4 hours. This fast spin gives it an unusual rugby ball shape. Haumea has two known moons, Hi'iaka and Namaka, and a ring system discovered in 2017.",
+        "metadata": {
+          "topic": "Solar System",
+          "subtopic": "Dwarf Planets",
+          "type": "Dwarf Planet",
+          "source": "https://solarsystem.nasa.gov/planets/dwarf-planets/haumea/",
+          "year": "2024",
+          "keywords": ["Haumea", "dwarf planet", "elongated", "rapid rotation", "ring system", "Hi'iaka", "Namaka"]
+        }
+      },
+      {
+        "id": "oort_cloud_001",
+        "text": "The Oort Cloud is a theoretical spherical shell of icy objects that surrounds the solar system at distances of 2,000 to 100,000 AU from the Sun. It's believed to be the source of long-period comets that take hundreds or thousands of years to orbit the Sun. The cloud contains trillions of objects.",
+        "metadata": {
+          "topic": "Solar System",
+          "subtopic": "Oort Cloud",
+          "type": "Region",
+          "source": "https://solarsystem.nasa.gov/solar-system/oort-cloud/",
+          "year": "2024",
+          "keywords": ["Oort Cloud", "icy objects", "long-period comets", "spherical shell", "trillions"]
+        }
+      },
+      {
+        "id": "starship_001",
+        "text": "SpaceX Starship is a fully reusable super heavy-lift launch vehicle designed for missions to Mars, the Moon, and beyond. Standing 120 meters tall when combined with its Super Heavy booster, Starship can carry up to 100-150 tons to low Earth orbit and is central to NASA's Artemis program for lunar missions.",
+        "metadata": {
+          "topic": "Future Exploration",
+          "subtopic": "SpaceX Starship",
+          "type": "Vehicle",
+          "source": "https://www.spacex.com/vehicles/starship/",
+          "year": "2024",
+          "keywords": ["SpaceX", "Starship", "reusable", "Mars", "Moon", "Artemis", "super heavy-lift"]
+        }
+      },
+      {
+        "id": "artemis_basecamp_001",
+        "text": "Artemis Base Camp is NASA's planned lunar surface habitat that will support long-duration missions on the Moon's south pole. The base will include a lunar cabin, rover, and power systems, enabling astronauts to stay for weeks at a time and conduct extensive scientific research in the permanently shadowed regions.",
+        "metadata": {
+          "topic": "Future Exploration",
+          "subtopic": "Artemis Base Camp",
+          "type": "Facility",
+          "source": "https://www.nasa.gov/artemis/",
+          "year": "2024",
+          "keywords": ["Artemis", "Base Camp", "lunar habitat", "south pole", "long-duration", "permanently shadowed regions"]
+        }
+      },
+      {
+        "id": "gateway_station_001",
+        "text": "The Lunar Gateway is a planned space station in lunar orbit that will serve as a staging point for missions to the Moon's surface and eventually Mars. This outpost will support both robotic and crewed missions, providing communication relay, science laboratory capabilities, and short-term habitation for astronauts.",
+        "metadata": {
+          "topic": "Future Exploration",
+          "subtopic": "Gateway Station",
+          "type": "Space Station",
+          "source": "https://www.nasa.gov/gateway/",
+          "year": "2024",
+          "keywords": ["Lunar Gateway", "space station", "lunar orbit", "staging point", "Mars missions", "communication relay"]
+        }
+      },
+      {
+        "id": "jwst_exoplanet_atmospheres_001",
+        "text": "The James Webb Space Telescope has revolutionized exoplanet atmospheric studies by detecting water vapor, clouds, and hazes in the atmospheres of distant worlds. JWST's infrared capabilities allow it to analyze the chemical composition of exoplanet atmospheres with unprecedented detail, including detecting carbon dioxide, water, and other molecules.",
+        "metadata": {
+          "topic": "Latest Discoveries",
+          "subtopic": "JWST Exoplanet Atmospheres",
+          "type": "Discovery",
+          "source": "https://www.nasa.gov/webb/",
+          "year": "2024",
+          "keywords": ["JWST", "James Webb", "exoplanet atmospheres", "water vapor", "carbon dioxide", "infrared"]
+        }
+      },
+      {
+        "id": "jwst_early_galaxies_001",
+        "text": "JWST has observed galaxies that formed just 400-600 million years after the Big Bang, revealing that early galaxies were more massive and mature than previously expected. These observations are reshaping our understanding of how quickly galaxies formed and evolved in the early universe.",
+        "metadata": {
+          "topic": "Latest Discoveries",
+          "subtopic": "JWST Early Galaxy Formation",
+          "type": "Discovery",
+          "source": "https://www.nasa.gov/webb/",
+          "year": "2024",
+          "keywords": ["JWST", "early galaxies", "Big Bang", "galaxy formation", "early universe", "400 million years"]
+        }
+      },
+      {
+        "id": "exoplanet_count_2024",
+        "text": "As of 2024, astronomers have confirmed over 5,500 exoplanets orbiting stars beyond our solar system. This number continues to grow rapidly thanks to missions like TESS, Kepler, and ground-based surveys. These discoveries include Earth-sized planets in habitable zones, hot Jupiters, and exotic worlds with extreme conditions.",
+        "metadata": {
+          "topic": "Exoplanets",
+          "subtopic": "Exoplanet Statistics",
+          "type": "Statistics",
+          "source": "https://exoplanets.nasa.gov/",
+          "year": "2024",
+          "keywords": ["exoplanets", "5500 confirmed", "TESS", "Kepler", "habitable zone", "Earth-sized"]
+        }
+      },
+      {
+        "id": "jwst_stellar_nurseries_001",
+        "text": "JWST has provided unprecedented views of stellar nurseries, revealing how stars and planetary systems form within dense clouds of gas and dust. The telescope's infrared vision can penetrate these dusty regions, showing the earliest stages of star formation and protoplanetary disk evolution.",
+        "metadata": {
+          "topic": "Latest Discoveries",
+          "subtopic": "JWST Stellar Formation",
+          "type": "Discovery",
+          "source": "https://www.nasa.gov/webb/",
+          "year": "2024",
+          "keywords": ["JWST", "stellar nurseries", "star formation", "protoplanetary disks", "infrared vision", "gas and dust"]
+        }
+      },
+      {
+        "id": "galaxy_basics_001",
+        "text": "A galaxy is a massive collection of stars, gas, dust, and dark matter held together by gravity. Our Milky Way galaxy contains over 100 billion stars. There are three main types of galaxies: spiral (like the Milky Way), elliptical (oval-shaped), and irregular (no defined shape). Galaxies can contain anywhere from millions to trillions of stars.",
+        "metadata": {
+          "topic": "Astronomy Basics",
+          "subtopic": "Galaxies",
+          "type": "Educational",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["galaxy", "Milky Way", "spiral", "elliptical", "irregular", "stars", "gravity"]
+        }
+      },
+      {
+        "id": "black_hole_basics_001",
+        "text": "A black hole is a region in space where gravity is so strong that nothing, not even light, can escape once it crosses the event horizon. Black holes form when massive stars collapse at the end of their lives. They come in different sizes: stellar-mass black holes (a few times the Sun's mass) and supermassive black holes (millions to billions of solar masses) found at galaxy centers.",
+        "metadata": {
+          "topic": "Astronomy Basics",
+          "subtopic": "Black Holes",
+          "type": "Educational",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["black hole", "event horizon", "gravity", "stellar collapse", "supermassive", "solar masses"]
+        }
+      },
+      {
+        "id": "gravity_basics_001",
+        "text": "Gravity is the fundamental force that attracts objects with mass toward each other. The more massive an object, the stronger its gravitational pull. Gravity keeps planets in orbit around stars, moons around planets, and holds galaxies together. Einstein's theory of general relativity describes gravity as the curvature of spacetime caused by mass and energy.",
+        "metadata": {
+          "topic": "Astronomy Basics",
+          "subtopic": "Gravity",
+          "type": "Educational",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["gravity", "fundamental force", "mass", "orbits", "general relativity", "spacetime"]
+        }
+      },
+      {
+        "id": "celestial_objects_001",
+        "text": "Stars are massive balls of hot gas that produce energy through nuclear fusion. Planets are large objects that orbit stars and have cleared their orbital path. Asteroids are rocky objects smaller than planets, mostly found in asteroid belts. Comets are icy bodies that develop tails when approaching the Sun. Moons are natural satellites that orbit planets.",
+        "metadata": {
+          "topic": "Astronomy Basics",
+          "subtopic": "Celestial Objects",
+          "type": "Educational",
+          "source": "https://solarsystem.nasa.gov/",
+          "year": "2024",
+          "keywords": ["stars", "planets", "asteroids", "comets", "moons", "nuclear fusion", "satellites"]
+        }
+      },
+      {
+        "id": "distance_measurements_001",
+        "text": "Light-years measure the distance light travels in one year (about 6 trillion miles or 9.5 trillion kilometers). Parsecs are another unit used by astronomers, equal to about 3.26 light-years. Redshift occurs when light from distant objects is stretched to longer wavelengths as the universe expands, helping astronomers measure distances to far galaxies and determine their motion.",
+        "metadata": {
+          "topic": "Astronomy Basics",
+          "subtopic": "Distance Measurements",
+          "type": "Educational",
+          "source": "https://science.nasa.gov/astrophysics/",
+          "year": "2024",
+          "keywords": ["light-years", "parsecs", "redshift", "distance", "universe expansion", "wavelengths"]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Space Science AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c2e 0%, #1a1a3e 50%, #2d1b69 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        .star:nth-child(odd) {
+            animation-delay: 1s;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Floating moon */
+        .moon {
+            position: fixed;
+            top: 10%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f5f5dc 0%, #e6e6fa 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(245, 245, 220, 0.3);
+            animation: float 6s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            background: rgba(200, 200, 200, 0.3);
+            border-radius: 50%;
+        }
+
+        .moon::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 45px;
+            width: 8px;
+            height: 8px;
+            background: rgba(200, 200, 200, 0.3);
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b8b8ff;
+            margin-bottom: 20px;
+        }
+
+        .rocket {
+            font-size: 2rem;
+            animation: rocket-fly 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes rocket-fly {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(5deg); }
+            75% { transform: translateY(-5px) rotate(-5deg); }
+        }
+
+        /* Chat interface */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-messages {
+            flex: 1;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-left: 20%;
+            text-align: right;
+        }
+
+        .assistant-message {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            margin-right: 20%;
+        }
+
+        .sources {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .topics {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Input area */
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #4ecdc4;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .send-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .voice-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            transition: all 0.3s ease;
+        }
+
+        .voice-btn:hover {
+            background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+            transform: translateY(-2px);
+        }
+
+        .voice-record-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .voice-record-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .voice-status {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+        }
+
+        .recording-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pulse-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+
+        /* Action buttons */
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Loading animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: white; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 white, .5em 0 0 rgba(0,0,0,0); }
+            80%, 100% { text-shadow: .25em 0 0 white, .5em 0 0 white; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                padding: 20px;
+            }
+            
+            .user-message {
+                margin-left: 10%;
+            }
+            
+            .assistant-message {
+                margin-right: 10%;
+            }
+            
+            .moon {
+                width: 60px;
+                height: 60px;
+                top: 5%;
+                right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated stars -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Floating moon -->
+    <div class="moon"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🚀 Space Science AI Assistant</h1>
+            <p class="subtitle">Explore the cosmos with our intelligent AI guide <span class="rocket">🚀</span></p>
+            <p style="color: #9999ff; font-size: 1rem;">Ask me anything about space, planets, stars, galaxies, and the universe!</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="actions">
+                <button class="action-btn" onclick="getTopics()">🌟 Available Topics</button>
+                <button class="action-btn" onclick="getHistory()">📚 Chat History</button>
+                <!-- <button class="action-btn" onclick="rebuildKnowledge()">🔄 Rebuild Knowledge</button> -->
+                <button class="action-btn" onclick="clearHistory()">🗑️ Clear History</button>
+                <button class="action-btn voice-btn" id="voiceBtn" onclick="toggleVoiceRecording()">🎤 Voice Input</button>
+                <button class="action-btn voice-btn" id="speakBtn" onclick="toggleSpeech()" style="display: none;">🔊 Speak Response</button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant-message">
+                    <div>🌌 Welcome to the Space Science AI Assistant! I'm here to help you explore the wonders of the universe.</div>
+                    <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Try asking me about:</div>
+                    <div style="margin-top: 5px; font-size: 0.9rem; opacity: 0.8;">• Planets and their moons 🪐</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">• Stars and galaxies ⭐</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">• Space exploration missions 🛸</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">• Astronomical phenomena 🌠</div>
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <span class="loading-dots">🚀 Exploring the cosmos</span>
+            </div>
+            
+            <div class="input-container">
+                <input type="text" class="input-field" id="questionInput" placeholder="Ask me about the mysteries of space... 🌌" onkeypress="handleKeyPress(event)">
+                <button class="voice-record-btn" id="recordBtn" onclick="startVoiceRecording()" style="display: none;">🎤</button>
+                <button class="send-btn" id="sendBtn" onclick="askQuestion()">Send 🚀</button>
+            </div>
+            
+            <div class="voice-status" id="voiceStatus" style="display: none;">
+                <div class="recording-indicator" id="recordingIndicator">
+                    <span class="pulse-dot"></span>
+                    <span>Recording... Click to stop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        let isLoading = false;
+        let chatHistory = [];
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecording = false;
+        let voiceEnabled = false;
+        let lastResponse = '';
+
+        // Check voice status on page load
+        window.addEventListener('load', function() {
+            checkVoiceStatus();
+            createStars();
+        });
+
+        async function checkVoiceStatus() {
+            try {
+                const response = await fetch('/voice_status');
+                const data = await response.json();
+                voiceEnabled = data.voice_enabled && data.openai_key;
+                
+                if (voiceEnabled) {
+                    document.getElementById('voiceBtn').style.display = 'inline-block';
+                    document.getElementById('recordBtn').style.display = 'inline-block';
+                }
+            } catch (error) {
+                console.error('Error checking voice status:', error);
+            }
+        }
+
+        async function toggleVoiceRecording() {
+            if (!voiceEnabled) {
+                alert('Voice features are not available. Please check your API keys.');
+                return;
+            }
+            
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startVoiceRecording();
+            }
+        }
+
+        async function startVoiceRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    await sendAudioToServer(audioBlob);
+                    
+                    // Stop all tracks to release microphone
+                    stream.getTracks().forEach(track => track.stop());
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                
+                // Update UI
+                document.getElementById('voiceStatus').style.display = 'block';
+                document.getElementById('voiceBtn').textContent = '⏹️ Stop Recording';
+                document.getElementById('recordingIndicator').onclick = stopRecording;
+                
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Could not access microphone. Please check permissions.');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+                // Update UI
+                document.getElementById('voiceStatus').style.display = 'none';
+                document.getElementById('voiceBtn').textContent = '🎤 Voice Input';
+            }
+        }
+
+        async function sendAudioToServer(audioBlob) {
+            try {
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.wav');
+                
+                const response = await fetch('/speech_to_text', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('questionInput').value = data.text;
+                    // Automatically ask the question
+                    askQuestion();
+                } else {
+                    alert('Speech recognition failed: ' + data.error);
+                }
+                
+            } catch (error) {
+                console.error('Error sending audio:', error);
+                alert('Error processing speech. Please try again.');
+            }
+        }
+
+        async function toggleSpeech() {
+            if (!lastResponse) {
+                alert('No response to speak. Ask a question first!');
+                return;
+            }
+            
+            await speakText(lastResponse);
+        }
+
+        async function speakText(text) {
+            try {
+                const response = await fetch('/text_to_speech', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Convert base64 to audio and play
+                    const audioData = atob(data.audio);
+                    const audioArray = new Uint8Array(audioData.length);
+                    for (let i = 0; i < audioData.length; i++) {
+                        audioArray[i] = audioData.charCodeAt(i);
+                    }
+                    
+                    const audioBlob = new Blob([audioArray], { type: 'audio/mpeg' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    
+                    audio.play();
+                    
+                    // Show speak button
+                    document.getElementById('speakBtn').style.display = 'inline-block';
+                } else {
+                    if (data.rate_limited) {
+                        alert('ElevenLabs rate limit exceeded. Please wait a moment before trying text-to-speech again.');
+                    } else {
+                        alert('Text-to-speech failed: ' + data.error);
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error with text-to-speech:', error);
+                if (error.message && error.message.includes('429')) {
+                    alert('Rate limit exceeded. Please wait before trying again.');
+                } else {
+                    alert('Error generating speech. Please try again.');
+                }
+            }
+        }
+
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                askQuestion();
+            }
+        }
+
+        // Add message to chat
+        function addMessage(content, isUser = false, sources = [], topics = []) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+            
+            let messageContent = `<div>${content}</div>`;
+            
+            if (sources && sources.length > 0) {
+                const sourcesList = sources.map(source => {
+                    if (typeof source === 'object') {
+                        return `${source.topic} - ${source.subtopic} (${source.year})`;
+                    }
+                    return source;
+                }).join(', ');
+                messageContent += `<div class="sources">📖 Sources: ${sourcesList}</div>`;
+            }
+            
+            if (topics && topics.length > 0) {
+                messageContent += `<div class="topics">🏷️ Topics: ${topics.join(', ')}</div>`;
+            }
+            
+            messageDiv.innerHTML = messageContent;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show/hide loading
+        function setLoading(show) {
+            const loading = document.getElementById('loading');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            loading.style.display = show ? 'block' : 'none';
+            sendBtn.disabled = show;
+        }
+
+        // Ask question
+        async function askQuestion() {
+            const input = document.getElementById('questionInput');
+            const question = input.value.trim();
+            
+            if (!question) return;
+            
+            // Add user message
+            addMessage(question, true);
+            input.value = '';
+            
+            // Show loading
+            setLoading(true);
+            
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addMessage(data.response, false, data.sources, data.topics);
+                    
+                    // Store last response for TTS
+                    lastResponse = data.response;
+                    
+                    // Show speak button if voice is enabled
+                    if (voiceEnabled) {
+                        document.getElementById('speakBtn').style.display = 'inline-block';
+                    }
+                } else {
+                    addMessage(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                addMessage(`❌ Network error: ${error.message}`, false);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Get available topics
+        async function getTopics() {
+            setLoading(true);
+            
+            try {
+                const response = await fetch('/topics');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const topicsList = data.topics.join(', ');
+                    addMessage(`🌟 Available topics: ${topicsList}`, false);
+                } else {
+                    addMessage(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                addMessage(`❌ Network error: ${error.message}`, false);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Get chat history
+        async function getHistory() {
+            setLoading(true);
+            
+            try {
+                const response = await fetch('/history');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.history && data.history.length > 0) {
+                        // Group conversation pairs (user question + assistant response)
+                        const conversations = [];
+                        for (let i = 0; i < data.history.length; i += 2) {
+                            const userMsg = data.history[i];
+                            const assistantMsg = data.history[i + 1];
+                            if (userMsg && assistantMsg) {
+                                conversations.push({
+                                    question: userMsg.content,
+                                    answer: assistantMsg.content,
+                                    timestamp: userMsg.timestamp
+                                });
+                            }
+                        }
+                        
+                        if (conversations.length > 0) {
+                            const historyText = conversations.map((conv, index) => 
+                                `${index + 1}. Q: ${conv.question}\nA: ${conv.answer}`
+                            ).join('\n\n');
+                            addMessage(`📚 Chat History:\n\n${historyText}`, false);
+                        } else {
+                            addMessage('📚 No chat history available yet.', false);
+                        }
+                    } else {
+                        addMessage('📚 No chat history available yet.', false);
+                    }
+                } else {
+                    addMessage(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                addMessage(`❌ Network error: ${error.message}`, false);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Rebuild knowledge base
+        async function rebuildKnowledge() {
+            setLoading(true);
+            
+            try {
+                const response = await fetch('/rebuild_knowledge', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addMessage('🔄 Knowledge base rebuilt successfully! ✅ The assistant now has updated information.', false);
+                } else {
+                    addMessage(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                addMessage(`❌ Network error: ${error.message}`, false);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Clear chat history
+        async function clearHistory() {
+            setLoading(true);
+            
+            try {
+                const response = await fetch('/clear_history', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addMessage('🗑️ Chat history cleared successfully!', false);
+                } else {
+                    addMessage(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                addMessage(`❌ Network error: ${error.message}`, false);
+            } finally {
+                setLoading(false);
+            }
+        }
+    </script>
+</body>
+</html>
