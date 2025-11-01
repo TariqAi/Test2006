@@ -66,7 +66,7 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For development; in production, specify domains
+    allow_origins=["https://space-assistant-rag-system-jana.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -88,6 +88,11 @@ if os.path.exists("static"):
 async def index(request: Request):
     """Serve the main page."""
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for Render."""
+    return {"status": "healthy", "service": "Space Science Assistant"}
 
 @app.post("/ask")
 async def ask_question(question_request: QuestionRequest):
