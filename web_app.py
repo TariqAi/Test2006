@@ -350,14 +350,14 @@ if __name__ == '__main__':
     print("\n🚀 Space Science Assistant Web UI is ready!")
     
     # Get port from environment variable (Render sets this automatically)
-    port = int(os.environ.get("PORT", 8002))
+    port = int(os.environ.get("PORT", 10000))
     
     print(f"🌟 Server will run on port: {port}")
     print("🌙 Explore the cosmos with our AI assistant!\n")
     
     # Run the FastAPI app with Uvicorn
     uvicorn.run(
-        "web_app:app",
+        app,
         host="0.0.0.0",
         port=port,
         reload=False,
