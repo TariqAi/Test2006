@@ -1,7 +1,5 @@
-.venv/
 venv/
 venv\
 chroma_db
 enhanced_chroma_db
 .env
-.env.template

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: space-science-assistant
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python web_app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false

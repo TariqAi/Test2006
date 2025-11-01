@@ -1,126 +1,289 @@
+#!/usr/bin/env python3
+"""
+Configuration Management for Space Science Assistant
+Manages API keys, settings, and environment variables for all integrated services.
+"""
+
 import os
-from typing import List
+from typing import Optional, Dict, Any
 from dataclasses import dataclass
 
+@dataclass
+class APIConfig:
+    """Configuration for API services."""
+    openai_api_key: Optional[str] = None
+    elevenlabs_api_key: Optional[str] = None
+    
+    # Model settings
+    gpt_model: str = "gpt-4"
+    whisper_model: str = "whisper-1"
+    embedding_model: str = "all-MiniLM-L6-v2"
+    
+    # Voice settings
+    elevenlabs_voice_id: Optional[str] = None
+    elevenlabs_model: str = "eleven_monolingual_v1"
+    
+    def __post_init__(self):
+        """Load API keys from environment if not provided."""
+        if not self.openai_api_key:
+            self.openai_api_key = os.getenv("OPENAI_API_KEY")
+        
+        if not self.elevenlabs_api_key:
+            self.elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
 
 @dataclass
-class DeploymentConfig:
-    """Configuration for deployment environments."""
+class AudioConfig:
+    """Configuration for audio processing."""
+    # Recording settings
+    sample_rate: int = 16000
+    channels: int = 1
+    chunk_size: int = 1024
+    max_record_seconds: int = 10
+    
+    # Audio format
+    audio_format: str = "paInt16"  # PyAudio format
+    
+    # Voice activity detection
+    silence_threshold: float = 0.01
+    silence_duration: float = 2.0  # seconds of silence to stop recording
 
-    def __init__(self):
-        # Detect environment
-        self.environment = os.getenv("ENVIRONMENT", "production" if os.getenv("RENDER") else "development")
-        self.is_production = os.getenv("RENDER") is not None or self.environment == "production"
+@dataclass
+class AssistantConfig:
+    """Configuration for the assistant behavior."""
+    # Knowledge base
+    knowledge_base_path: str = "space_science_knowledge_base.json"
+    
+    # ChromaDB settings
+    chroma_persist_dir: str = "./enhanced_chroma_db"
+    collection_name: str = "enhanced_space_science_kb"
+    
+    # Response settings
+    max_response_length: int = 800
+    max_tts_length: int = 500  # Shorter for better TTS
+    max_retrieved_chunks: int = 5
+    
+    # Conversation settings
+    max_conversation_history: int = 50
+    context_window_size: int = 10  # Number of previous exchanges to consider
 
-        # Server configuration
-        self.port = int(os.getenv("PORT", 10000))  # Render automatically provides PORT
-        self.host = "0.0.0.0"
+class ConfigManager:
+    """Manages configuration for the Space Science Assistant."""
+    
+    def __init__(self, config_file: Optional[str] = None):
+        """Initialize configuration manager."""
+        self.config_file = config_file or ".env"
+        
+        # Load configurations
+        self.api = APIConfig()
+        self.audio = AudioConfig()
+        self.assistant = AssistantConfig()
+        
+        # Load from file if exists
+        self._load_from_file()
+    
+    def _load_from_file(self):
+        """Load configuration from .env file."""
+        if os.path.exists(self.config_file):
+            try:
+                with open(self.config_file, 'r') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith('#') and '=' in line:
+                            key, value = line.split('=', 1)
+                            os.environ[key.strip()] = value.strip().strip('"\'')
+                
+                # Reload API config with new environment variables
+                self.api = APIConfig()
+                
+            except Exception as e:
+                print(f"Warning: Could not load config file {self.config_file}: {e}")
+    
+    def create_env_template(self, filename: str = ".env.template"):
+        """Create a template .env file with all required settings."""
+        template_content = """
+# Space Science Assistant Configuration
+# Copy this file to .env and fill in your API keys
 
-        # Production URL (Render deployment)
-        self.production_url = "https://space-assistant-rag-system.onrender.com"
-        self.render_external_url = os.getenv("RENDER_EXTERNAL_URL", self.production_url)
+# =============================================================================
+# API KEYS (Required)
+# =============================================================================
 
-        # Local development URL
-        self.local_url = f"http://localhost:{self.port}"
+# OpenAI API Key (for GPT-4 and Whisper)
+# Get from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=your_openai_api_key_here
 
-        # API base paths
-        self.api_prefix = "/api"
-        self.docs_url = "/api/docs"
-        self.redoc_url = "/api/redoc"
+# ElevenLabs API Key (for Text-to-Speech)
+# Get from: https://elevenlabs.io/
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 
-        # CORS setup
-        self.allowed_origins = self._get_allowed_origins()
+# =============================================================================
+# OPTIONAL SETTINGS
+# =============================================================================
 
-        # Feature flags
-        self.enable_docs = True
-        self.enable_reload = not self.is_production
+# ElevenLabs Voice ID (optional - will use default if not set)
+# Find voice IDs at: https://elevenlabs.io/voices
+# ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM
 
-        # API keys
-        self.openai_api_key = os.getenv("OPENAI_API_KEY")
-        self.elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
+# Model Settings
+# GPT_MODEL=gpt-4
+# WHISPER_MODEL=whisper-1
+# EMBEDDING_MODEL=all-MiniLM-L6-v2
 
-        # Database paths
-        self.chroma_persist_dir = os.getenv("CHROMA_PERSIST_DIR", "./enhanced_chroma_db")
-        self.knowledge_base_path = os.getenv("KNOWLEDGE_BASE_PATH", "space_science_knowledge_base.json")
+# Audio Settings
+# SAMPLE_RATE=16000
+# MAX_RECORD_SECONDS=10
 
-        # Rate limiting
-        self.tts_cooldown = int(os.getenv("TTS_COOLDOWN", "2"))
-        self.max_requests_per_minute = int(os.getenv("MAX_REQUESTS_PER_MINUTE", "60"))
-
-        # Logging
-        self.log_level = os.getenv("LOG_LEVEL", "info" if self.is_production else "debug")
-
-    def _get_allowed_origins(self) -> List[str]:
-        """CORS origins setup"""
-        if self.is_production:
-            origins = [
-                self.production_url,
-                self.render_external_url,
-                "https://space-assistant-rag-system.onrender.com",
-            ]
-            custom_domain = os.getenv("CUSTOM_DOMAIN")
-            if custom_domain:
-                origins.append(f"https://{custom_domain}")
-            return list(set(filter(None, origins)))
+# Assistant Settings
+# MAX_RESPONSE_LENGTH=800
+# MAX_RETRIEVED_CHUNKS=5
+"""
+        
+        with open(filename, 'w') as f:
+            f.write(template_content.strip())
+        
+        print(f"✅ Created configuration template: {filename}")
+        print(f"📝 Please copy to .env and add your API keys")
+    
+    def validate_config(self) -> Dict[str, Any]:
+        """Validate configuration and return status."""
+        status = {
+            'valid': True,
+            'warnings': [],
+            'errors': [],
+            'features_available': {
+                'gpt4': False,
+                'tts': False,
+                'stt': False,
+                'voice_interface': False
+            }
+        }
+        
+        # Check OpenAI API key
+        if not self.api.openai_api_key:
+            status['errors'].append("OpenAI API key not found")
+            status['valid'] = False
         else:
-            return [
-                "http://localhost:10000",
-                "http://127.0.0.1:10000",
-                "http://localhost:3000",
-                "http://127.0.0.1:3000",
-                "*",
-            ]
+            status['features_available']['gpt4'] = True
+            status['features_available']['stt'] = True
+        
+        # Check ElevenLabs API key
+        if not self.api.elevenlabs_api_key:
+            status['warnings'].append("ElevenLabs API key not found - TTS disabled")
+        else:
+            status['features_available']['tts'] = True
+        
+        # Voice interface requires both
+        if status['features_available']['tts'] and status['features_available']['stt']:
+            status['features_available']['voice_interface'] = True
+        
+        # Check file paths
+        if not os.path.exists(self.assistant.knowledge_base_path):
+            status['errors'].append(f"Knowledge base not found: {self.assistant.knowledge_base_path}")
+            status['valid'] = False
+        
+        return status
+    
+    def print_status(self):
+        """Print configuration status."""
+        status = self.validate_config()
+        
+        print("\n" + "="*50)
+        print("🔧 SPACE SCIENCE ASSISTANT CONFIGURATION")
+        print("="*50)
+        
+        # API Keys Status
+        print("\n🔑 API Keys:")
+        print(f"  OpenAI (GPT-4/Whisper): {'✅ Set' if self.api.openai_api_key else '❌ Missing'}")
+        print(f"  ElevenLabs (TTS):       {'✅ Set' if self.api.elevenlabs_api_key else '❌ Missing'}")
+        
+        # Features Status
+        print("\n🚀 Available Features:")
+        features = status['features_available']
+        print(f"  GPT-4 Responses:        {'✅ Available' if features['gpt4'] else '❌ Disabled'}")
+        print(f"  Text-to-Speech:         {'✅ Available' if features['tts'] else '❌ Disabled'}")
+        print(f"  Speech-to-Text:         {'✅ Available' if features['stt'] else '❌ Disabled'}")
+        print(f"  Voice Interface:        {'✅ Available' if features['voice_interface'] else '❌ Disabled'}")
+        
+        # Model Settings
+        print("\n⚙️  Model Settings:")
+        print(f"  GPT Model:              {self.api.gpt_model}")
+        print(f"  Whisper Model:          {self.api.whisper_model}")
+        print(f"  Embedding Model:        {self.api.embedding_model}")
+        
+        # Warnings and Errors
+        if status['warnings']:
+            print("\n⚠️  Warnings:")
+            for warning in status['warnings']:
+                print(f"  • {warning}")
+        
+        if status['errors']:
+            print("\n❌ Errors:")
+            for error in status['errors']:
+                print(f"  • {error}")
+        
+        # Overall Status
+        print("\n" + "="*50)
+        if status['valid']:
+            print("✅ Configuration is valid!")
+        else:
+            print("❌ Configuration has errors - please fix before using")
+        
+        print("="*50)
+        
+        return status
+    
+    def get_setup_instructions(self) -> str:
+        """Get setup instructions for missing components."""
+        status = self.validate_config()
+        instructions = []
+        
+        if not self.api.openai_api_key:
+            instructions.append("""
+🔑 OpenAI API Key Setup:
+1. Go to https://platform.openai.com/api-keys
+2. Create a new API key
+3. Add to .env file: OPENAI_API_KEY=your_key_here
+""")
+        
+        if not self.api.elevenlabs_api_key:
+            instructions.append("""
+🔊 ElevenLabs API Key Setup:
+1. Go to https://elevenlabs.io/
+2. Sign up for an account
+3. Get your API key from settings
+4. Add to .env file: ELEVENLABS_API_KEY=your_key_here
+""")
+        
+        if not os.path.exists(self.assistant.knowledge_base_path):
+            instructions.append("""
+📚 Knowledge Base Setup:
+1. Ensure space_science_knowledge_base.json exists
+2. Run the knowledge base creation script if needed
+""")
+        
+        return "\n".join(instructions) if instructions else "✅ All components are properly configured!"
 
-    def get_api_url(self) -> str:
-        return self.render_external_url if self.is_production else self.local_url
+# Global configuration instance
+config = ConfigManager()
 
-    def get_full_url(self, path: str = "") -> str:
-        return f"{self.get_api_url()}{path}"
-
-    def print_config_info(self):
-        print("\n" + "=" * 60)
-        print("🚀 DEPLOYMENT CONFIGURATION")
-        print("=" * 60)
-        print(f"Environment:        {self.environment}")
-        print(f"Production Mode:    {self.is_production}")
-        print(f"API URL:            {self.get_api_url()}")
-        print(f"Port:               {self.port}")
-        print(f"Host:               {self.host}")
-        print(f"Docs URL:           {self.get_full_url(self.docs_url)}")
-        print(f"ReDoc URL:          {self.get_full_url(self.redoc_url)}")
-        print(f"Reload Enabled:     {self.enable_reload}")
-        print(f"Log Level:          {self.log_level}")
-        print("\n🌍 Allowed Origins:")
-        for o in self.allowed_origins:
-            print(f"  • {o}")
-        print("\n🔑 API KEYS:")
-        print(f"OpenAI Key:         {'✅ Set' if self.openai_api_key else '❌ Missing'}")
-        print(f"ElevenLabs Key:     {'✅ Set' if self.elevenlabs_api_key else '❌ Missing'}")
-        print("=" * 60 + "\n")
-
-
-# Create global instance
-deployment_config = DeploymentConfig()
-
-
-def setup_deployment_config() -> DeploymentConfig:
-    config = DeploymentConfig()
-    config.print_config_info()
+def setup_assistant_config() -> ConfigManager:
+    """Setup and validate assistant configuration."""
+    print("🔧 Setting up Space Science Assistant configuration...")
+    
+    # Create .env template if it doesn't exist
+    if not os.path.exists(".env") and not os.path.exists(".env.template"):
+        config.create_env_template()
+    
+    # Print status
+    status = config.print_status()
+    
+    # Show setup instructions if needed
+    if not status['valid'] or status['warnings']:
+        print("\n📋 Setup Instructions:")
+        print(config.get_setup_instructions())
+    
     return config
 
-
-def get_api_base_url() -> str:
-    return deployment_config.get_api_url()
-
-
-def get_cors_origins() -> List[str]:
-    return deployment_config.allowed_origins
-
-
-# Test run
 if __name__ == "__main__":
-    print("🔧 Testing Render Deployment Config...\n")
-    config = setup_deployment_config()
-    print(f"Base URL: {config.get_api_url()}")
-    print(f"Docs:     {config.get_full_url('/api/docs')}")
-    print(f"Health:   {config.get_full_url('/health')}")
+    # Run configuration setup
+    setup_assistant_config()

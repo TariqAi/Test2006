@@ -1,45 +1,28 @@
-#!/usr/bin/env python3
-"""
-FastAPI Web Application for Space Science Assistant
-Converted from Flask with enhanced features and async support.
-"""
-
-from fastapi import FastAPI, HTTPException, UploadFile, File, Request
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request, HTTPException, File, UploadFile
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+import uvicorn
 import os
 import sys
+import io
+import wave
 import time
-import base64
 from threading import Lock
-from datetime import datetime
-import uvicorn
-
 from enhanced_space_assistant import EnhancedSpaceScienceAssistant
+from contextlib import asynccontextmanager
 
-# Simple configuration - don't import complex config that might fail
-class SimpleConfig:
-    def __init__(self):
-        self.environment = os.getenv("ENVIRONMENT", "development")
-        self.is_production = os.getenv("RENDER", False) or self.environment == "production"
-        self.port = int(os.getenv("PORT", 10000))
-        self.render_url = "https://space-assistant-rag-system.onrender.com"
-        
-    def get_api_url(self):
-        if self.is_production:
-            return self.render_url
-        return f"http://localhost:{self.port}"
-    
-    def get_allowed_origins(self):
-        if self.is_production:
-            return [self.render_url, "https://space-assistant-rag-system.onrender.com"]
-        return ["*"]
-
-config = SimpleConfig()
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("✅ Environment variables loaded from .env file")
+except ImportError:
+    print("⚠️  python-dotenv not installed. Install with: pip install python-dotenv")
+except Exception as e:
+    print(f"⚠️  Could not load .env file: {e}")
 
 # Import voice functionality
 try:
@@ -50,146 +33,71 @@ except ImportError:
     VOICE_ENABLED = False
     print("⚠️  Voice libraries not available. Install with: pip install openai elevenlabs")
 
-# Initialize FastAPI app
+# Define Pydantic models for request/response validation
+class QuestionRequest(BaseModel):
+    question: str
+
+# Setup lifespan context manager for FastAPI
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initialize on startup
+    global space_assistant
+    print("🚀 Initializing Space Science Assistant...")
+    try:
+        space_assistant = EnhancedSpaceScienceAssistant()
+        print("✅ Space Science Assistant initialized successfully!")
+    except Exception as e:
+        print(f"⚠️ Warning: Error initializing assistant: {e}")
+        print("   The service will continue, but some features may not work.")
+    
+    yield
+    
+    # Cleanup on shutdown
+    print("🛑 Shutting down Space Science Assistant...")
+
+# Initialize FastAPI app with lifespan
 app = FastAPI(
     title="Space Science AI Assistant",
     description="Advanced AI-powered space science knowledge system with voice capabilities",
     version="2.0.0",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc"
+    lifespan=lifespan
 )
 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=config.get_allowed_origins(),
+    allow_origins=["*"],  # For development; in production, specify domains
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Setup templates (if you have HTML templates)
+# Setup templates
 templates = Jinja2Templates(directory="templates")
-
-# Mount static files (if you have them)
-if os.path.exists("static"):
-    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Rate limiting for TTS requests
 tts_lock = Lock()
-tts_last_request: Dict[str, float] = {}
+tts_last_request = {}
 TTS_COOLDOWN = 2  # seconds between requests per session
 
-# Initialize the space assistant
-space_assistant: Optional[EnhancedSpaceScienceAssistant] = None
+# Mount static files if they exist
+if os.path.exists("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Pydantic models for request/response validation
-class QuestionRequest(BaseModel):
-    question: str
-
-class TextToSpeechRequest(BaseModel):
-    text: str
-
-class QuestionResponse(BaseModel):
-    response: str
-    sources: List[Dict[str, Any]]
-    topics: List[str]
-
-class TopicsResponse(BaseModel):
-    topics: List[str]
-
-class VoiceStatusResponse(BaseModel):
-    voice_enabled: bool
-    openai_key: bool
-    elevenlabs_key: bool
-
-class HistoryResponse(BaseModel):
-    history: List[Dict[str, Any]]
-
-class MessageResponse(BaseModel):
-    message: str
-
-class ErrorResponse(BaseModel):
-    error: str
-    rate_limited: Optional[bool] = None
-
-class SpeechToTextResponse(BaseModel):
-    text: str
-    success: bool
-
-class TextToSpeechResponse(BaseModel):
-    audio: str
-    success: bool
-
-class RebuildResponse(BaseModel):
-    success: bool
-    message: str
-
-# Startup event
-@app.on_event("startup")
-async def startup_event():
-    """Initialize the assistant on startup."""
-    global space_assistant
-    print("🚀 Initializing Space Science Assistant...")
-    try:
-        space_assistant = EnhancedSpaceScienceAssistant()
-        # Remove the extra initialize() call since __init__ already does it
-        print("✅ Space Science Assistant initialized successfully!")
-    except Exception as e:
-        print(f"⚠️ Warning: Error initializing assistant: {e}")
-        print("   The service will continue, but some features may not work.")
-        # Don't exit - let the service run anyway
-
-# Shutdown event
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Cleanup on shutdown."""
-    print("🛑 Shutting down Space Science Assistant...")
-
-# Root endpoint
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 async def index(request: Request):
     """Serve the main page."""
-    if os.path.exists("templates/index.html"):
-        return templates.TemplateResponse("index.html", {
-            "request": request,
-            "api_url": config.get_api_url()
-        })
-    else:
-        api_url = config.get_api_url()
-        return HTMLResponse(content=f"""
-        <html>
-            <head><title>Space Science Assistant</title></head>
-            <body>
-                <h1>🚀 Space Science AI Assistant</h1>
-                <p>API is running at: <strong>{api_url}</strong></p>
-                <p>Visit <a href="{api_url}/api/docs">/api/docs</a> for documentation.</p>
-            </body>
-        </html>
-        """)
+    return templates.TemplateResponse("index.html", {"request": request})
 
-# Health check endpoint
-@app.get("/health")
-async def health_check():
-    """Health check endpoint."""
-    return {
-        "status": "healthy",
-        "assistant_initialized": space_assistant is not None,
-        "voice_enabled": VOICE_ENABLED,
-        "timestamp": datetime.now().isoformat(),
-        "environment": config.environment
-    }
-
-# Main Q&A endpoint
-@app.post("/ask", response_model=QuestionResponse)
-async def ask_question(request: QuestionRequest):
+@app.post("/ask")
+async def ask_question(question_request: QuestionRequest):
     """
     Ask the Space Science Assistant a question.
     
     - **question**: The question to ask about space science
     """
     try:
-        question = request.question.strip()
+        question = question_request.question.strip()
         
         if not question:
             raise HTTPException(status_code=400, detail="Please provide a question")
@@ -200,19 +108,18 @@ async def ask_question(request: QuestionRequest):
         # Get response from the assistant
         response = space_assistant.ask_question(question)
         
-        return QuestionResponse(
-            response=response.get('response', ''),
-            sources=response.get('sources', []),
-            topics=response.get('topics_covered', [])
-        )
+        return {
+            "response": response.get('response', ''),
+            "sources": response.get('sources', []),
+            "topics": response.get('topics', [])
+        }
         
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-# Topics endpoint
-@app.get("/topics", response_model=TopicsResponse)
+@app.get("/topics")
 async def get_topics():
     """
     Get all available topics in the knowledge base.
@@ -222,14 +129,25 @@ async def get_topics():
             raise HTTPException(status_code=500, detail="Assistant not initialized")
         
         topics = space_assistant.get_available_topics()
-        return TopicsResponse(topics=topics)
+        return {"topics": topics}
         
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-# Speech to text endpoint
+# Define models for file uploads and responses
+class SpeechToTextResponse(BaseModel):
+    text: str
+    success: bool
+
+class TextToSpeechRequest(BaseModel):
+    text: str
+
+class TextToSpeechResponse(BaseModel):
+    audio: str
+    success: bool
+
 @app.post("/speech_to_text", response_model=SpeechToTextResponse)
 async def speech_to_text(audio: UploadFile = File(...)):
     """
@@ -274,7 +192,6 @@ async def speech_to_text(audio: UploadFile = File(...)):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Speech-to-text error: {str(e)}")
 
-# Text to speech endpoint
 @app.post("/text_to_speech", response_model=TextToSpeechResponse)
 async def text_to_speech(request: TextToSpeechRequest, req: Request):
     """
@@ -310,6 +227,7 @@ async def text_to_speech(request: TextToSpeechRequest, req: Request):
             raise HTTPException(status_code=400, detail="No text provided")
         
         # Setup ElevenLabs API key
+        # Setup ElevenLabs API key
         elevenlabs_key = os.getenv('ELEVENLABS_API_KEY')
         if not elevenlabs_key:
             raise HTTPException(status_code=400, detail="ElevenLabs API key not configured")
@@ -326,6 +244,8 @@ async def text_to_speech(request: TextToSpeechRequest, req: Request):
         )
         
         # Convert audio to base64 for web transmission
+        import base64
+        # ElevenLabs returns an iterator of audio chunks
         audio_bytes = b''.join(audio)
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
         
@@ -349,7 +269,11 @@ async def text_to_speech(request: TextToSpeechRequest, req: Request):
             )
         raise HTTPException(status_code=500, detail=f"Text-to-speech error: {error_msg}")
 
-# Voice status endpoint
+class VoiceStatusResponse(BaseModel):
+    voice_enabled: bool
+    openai_key: bool
+    elevenlabs_key: bool
+
 @app.get("/voice_status", response_model=VoiceStatusResponse)
 async def voice_status():
     """
@@ -361,7 +285,9 @@ async def voice_status():
         elevenlabs_key=bool(os.getenv('ELEVENLABS_API_KEY'))
     )
 
-# Conversation history endpoint
+class HistoryResponse(BaseModel):
+    history: list
+
 @app.get("/history", response_model=HistoryResponse)
 async def get_history():
     """
@@ -379,7 +305,9 @@ async def get_history():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-# Clear history endpoint
+class MessageResponse(BaseModel):
+    message: str
+
 @app.post("/clear_history", response_model=MessageResponse)
 async def clear_history():
     """
@@ -397,7 +325,10 @@ async def clear_history():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-# Rebuild knowledge base endpoint
+class RebuildResponse(BaseModel):
+    success: bool
+    message: str
+
 @app.post("/rebuild_knowledge", response_model=RebuildResponse)
 async def rebuild_knowledge():
     """
@@ -409,36 +340,26 @@ async def rebuild_knowledge():
         
         space_assistant.rebuild_knowledge_base()
         return RebuildResponse(success=True, message="Knowledge base rebuilt successfully")
-        
-    except HTTPException:
-        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
-# Main entry point
+
 if __name__ == '__main__':
-    # ✅ استيراد إعدادات النشر من ملف deployment_config
-    from deployment_config import setup_deployment_config
+    print("Starting Space Science Assistant Web Interface...")
     
-    # ✅ تحميل الإعدادات
-    config = setup_deployment_config()
-
-    # ✅ استخدم القيم من config بدل من القيم الثابتة
-    port = config.port
-    host = config.host
-
-    print(f"🚀 Starting Space Science Assistant...")
-    print(f"🌍 Environment: {config.environment}")
-    print(f"🌍 Host: {host}")
-    print(f"🌍 Port: {port}")
-    print(f"🌍 API URL: {config.get_api_url()}")
+    print("\n🚀 Space Science Assistant Web UI is ready!")
     
-    # ✅ تشغيل Uvicorn باستخدام الإعدادات الديناميكية
+    # Get port from environment variable (Render sets this automatically)
+    port = int(os.environ.get("PORT", 8002))
+    
+    print(f"🌟 Server will run on port: {port}")
+    print("🌙 Explore the cosmos with our AI assistant!\n")
+    
+    # Run the FastAPI app with Uvicorn
     uvicorn.run(
-        app,
-        host=host,
+        "web_app:app",
+        host="0.0.0.0",
         port=port,
-        log_level=config.log_level,
-        reload=config.enable_reload,
-        access_log=True
+        reload=False,
+        log_level="info"
     )

@@ -1,35 +1,14 @@
-# Core RAG dependencies
-sentence-transformers
-chromadb
-numpy
-
-# AI/ML APIs
-openai
-elevenlabs
-
-# FastAPI and web server
 fastapi
-uvicorn[standard]
-python-multipart  # For file uploads
-jinja2  # For templates
-
-# Data processing
-pandas
-json5
-
-# Optional: For advanced NLP features
-transformers
-torch
-
-# Utility libraries
-tqdm
+uvicorn
+pydantic
+pydantic-settings
+jinja2
+python-multipart
+openai
+chromadb
+sentence-transformers
+numpy
+elevenlabs
+python-dotenv
 requests
-pydantic  # For data validation
-
-# Development and testing
-pytest
-pytest-cov
-httpx  # For testing FastAPI
-
-# Optional: For enhanced embeddings
-cohere  # If using Cohere embeddings
+aiofiles
